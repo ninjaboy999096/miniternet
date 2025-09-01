@@ -4,9 +4,17 @@ import requests
 import threading
 import keyboard  # pip install keyboard
 
-# URLs
+# Default URLs
 MAIN_URL = 'https://raw.githubusercontent.com/ninjaboy999096/miniternet/main/mininternet.txt'
 DEBUG_URL = 'https://raw.githubusercontent.com/ninjaboy999096/miniternet/main/debug_info.txt'
+
+# Custom links you can add easily
+# Just add: "keyword": "https://raw.githubusercontent.com/user/repo/branch/file.txt"
+CUSTOM_LINKS = {
+    "main": MAIN_URL,
+    "debug": DEBUG_URL,
+    "pota.to": "https://raw.githubusercontent.com/ninjaboy999096/miniternet/main/potato.txt"
+}
 
 current_url = MAIN_URL
 last_content = None
@@ -16,7 +24,7 @@ sequence = ['a', 'b', 'c']
 seq_index = 0
 
 def clear_console():
-    os.system('cls')
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def fetch_content(url):
     try:
@@ -47,6 +55,16 @@ def check_sequence(key):
         else:
             seq_index = 0
 
+def user_input_listener():
+    global current_url
+    while True:
+        user_input = input("\nType a string to load from CUSTOM_LINKS (or leave blank to skip): ").strip().lower()
+        if user_input in CUSTOM_LINKS:
+            current_url = CUSTOM_LINKS[user_input]
+            print(f"Switched to: {current_url}")
+        elif user_input != "":
+            print("No link found for that keyword.")
+
 def key_listener():
     keyboard.on_press(check_sequence)
     # Wait until ESC pressed to exit
@@ -55,17 +73,22 @@ def key_listener():
 def main():
     global last_content
     clear_console()
-    print("Press 'a', then 'b', then 'c' to switch files. Press ESC to quit.\n")
+    print("Press 'a', then 'b', then 'c' to switch between main/debug files.")
+    print("Type a keyword (like 'main', 'debug', 'extra') to switch to custom links.")
+    print("Press ESC to quit.\n")
     
     # Start key listener in a separate thread
-    listener_thread = threading.Thread(target=key_listener, daemon=True)
-    listener_thread.start()
+    threading.Thread(target=key_listener, daemon=True).start()
+    # Start user input listener in a separate thread
+    threading.Thread(target=user_input_listener, daemon=True).start()
 
     while True:
         content = fetch_content(current_url)
         if content and content != last_content:
             clear_console()
-            print("Press 'a', then 'b', then 'c' to switch files. Press ESC to quit.\n")
+            print("Press 'a', then 'b', then 'c' to switch between main/debug files.")
+            print("Type a keyword (like 'main', 'debug', 'extra') to switch to custom links.")
+            print("Press ESC to quit.\n")
             print(content)
             last_content = content
         time.sleep(3)
