@@ -11,8 +11,6 @@ DEBUG_URL = 'https://raw.githubusercontent.com/ninjaboy999096/miniternet/main/de
 # Custom links you can add easily
 # Just add: "keyword": "https://raw.githubusercontent.com/user/repo/branch/file.txt"
 CUSTOM_LINKS = {
-    "main": MAIN_URL,
-    "debug": DEBUG_URL,
     "pota.to": "https://raw.githubusercontent.com/ninjaboy999096/miniternet/main/potato.txt"
 }
 
@@ -74,7 +72,7 @@ def main():
     global last_content
     clear_console()
     print("Press 'a', then 'b', then 'c' to switch between main/debug files.")
-    print("Type a keyword (like 'main', 'debug', 'extra') to switch to custom links.")
+    print("Custom links so far:pota.to")
     print("Press ESC to quit.\n")
     
     # Start key listener in a separate thread
@@ -95,3 +93,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
