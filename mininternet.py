@@ -85,7 +85,7 @@ def main():
         if content and content != last_content:
             clear_console()
             print("Press 'a', then 'b', then 'c' to switch between main/debug files.")
-            print("Type a keyword (like 'main', 'debug', 'extra') to switch to custom links.")
+            print("Custom links so far:pota.to")
             print("Press ESC to quit.\n")
             print(content)
             last_content = content
@@ -93,4 +93,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
